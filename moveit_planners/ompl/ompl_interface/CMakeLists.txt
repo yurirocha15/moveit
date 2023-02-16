@@ -17,6 +17,8 @@ add_library(${MOVEIT_LIB_NAME}
   src/detail/constraints_library.cpp
   src/detail/constrained_sampler.cpp
   src/detail/constrained_goal_sampler.cpp
+  src/samplers/ellipsoidal_informed_sampler.cpp
+  src/objective/path_length_optimization_objective_for_informed_planner.cpp
 )
 set_target_properties(${MOVEIT_LIB_NAME} PROPERTIES VERSION "${${PROJECT_NAME}_VERSION}")
 
