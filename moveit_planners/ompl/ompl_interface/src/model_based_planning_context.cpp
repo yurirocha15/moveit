@@ -387,8 +387,10 @@ void ompl_interface::ModelBasedPlanningContext::useConfig()
     if (type == "geometric::ABITstar" || type == "geometric::AITstar" || type == "geometric::BITstar" ||
         type == "geometric::EITstar" || type == "geometric::EIRMstar")
     {
-      ROS_WARN_NAMED(LOGNAME, "Informed planners should use PathLengthOptimizationObjectiveForInformedPlanner. "
-                              "Forcing planner to use it.");
+      ROS_WARN_NAMED(LOGNAME,
+                     "Informed planners should use PathLengthOptimizationObjectiveForInformedPlanner. "
+                     "Forcing %s to use it.",
+                     type.c_str());
       ompl_simple_setup_->setOptimizationObjective(std::make_shared<PathLengthOptimizationObjectiveForInformedPlanner>(
           ompl_simple_setup_->getSpaceInformation()));
     }
