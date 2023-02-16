@@ -44,6 +44,7 @@
 #include <moveit/ompl_interface/detail/goal_union.h>
 #include <moveit/ompl_interface/detail/projection_evaluators.h>
 #include <moveit/ompl_interface/detail/constraints_library.h>
+#include <moveit/ompl_interface/objective/path_length_optimization_objective_for_informed_planner.h>
 
 #include <moveit/kinematic_constraints/utils.h>
 #include <moveit/profiler/profiler.h>
@@ -327,6 +328,11 @@ void ompl_interface::ModelBasedPlanningContext::useConfig()
       objective =
           std::make_shared<ompl::base::MaximizeMinClearanceObjective>(ompl_simple_setup_->getSpaceInformation());
     }
+    // else if (optimizer == "PathLengthOptimizationObjectiveForInformedPlanner")
+    // {
+    //   objective =
+    //       std::make_shared<PathLengthOptimizationObjectiveForInformedPlanner>(ompl_simple_setup_->getSpaceInformation());
+    // }
     else
     {
       objective =
@@ -376,6 +382,16 @@ void ompl_interface::ModelBasedPlanningContext::useConfig()
                    "Planner configuration '%s' will use planner '%s'. "
                    "Additional configuration parameters will be set when the planner is constructed.",
                    name_.c_str(), type.c_str());
+
+    // Post hook to add informed sampler
+    if (type == "geometric::ABITstar" || type == "geometric::AITstar" || type == "geometric::BITstar" ||
+        type == "geometric::EITstar" || type == "geometric::EIRMstar")
+    {
+      ROS_WARN_NAMED(LOGNAME, "Informed planners should use PathLengthOptimizationObjectiveForInformedPlanner. "
+                              "Forcing planner to use it.");
+      ompl_simple_setup_->setOptimizationObjective(std::make_shared<PathLengthOptimizationObjectiveForInformedPlanner>(
+          ompl_simple_setup_->getSpaceInformation()));
+    }
   }
 
   // call the setParams() after setup(), so we know what the params are

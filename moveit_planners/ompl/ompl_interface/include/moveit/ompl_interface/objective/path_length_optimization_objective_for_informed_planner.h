@@ -47,6 +47,6 @@ public:
   PathLengthOptimizationObjectiveForInformedPlanner(const ompl::base::SpaceInformationPtr& si);
 
   ompl::base::InformedSamplerPtr allocInformedStateSampler(const ompl::base::ProblemDefinitionPtr& probDefn,
-                                               unsigned int maxNumberCalls) const override;
+                                                           unsigned int maxNumberCalls) const override;
 };
 }  // namespace ompl_interface
